@@ -30,11 +30,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-//var csroRegexp = /https?:\/\/(?:www\.)?e-laws\.gov\.on\.ca\/html\/(?:statutes|regs)\/(?:english|french)\/.+/;
 var csroRegexp = /https?:\/\/(?:www\.)?e-laws\.gov\.on\.ca\/html\/.+/;
-//var altcsoRegexp = /https?:\/\/(?:www\.)?e-laws\.gov\.on\.ca\/Browse\?/;
-
-
 
 function getMultiple(doc, checkOnly) {
   var res = ZU.xpath(doc, '//a[@class="inlineGreenResult"][not(@title="Legislative History")][not(@title="Historique législatif")]');
@@ -51,7 +47,6 @@ function getMultiple(doc, checkOnly) {
 
 function detectWeb(doc, url) {
 	
-	//if (csroRegexp.test(url)||altcsoRegexp.test(url)) {
 	if (csroRegexp.test(url)) {
 	return "statute";	
 	} else if (getMultiple(doc,true)){
@@ -76,13 +71,13 @@ function scrape(doc, url) {
 		// The title for Ontario  Regulations is always capitalized. To my knowledge the only way to correct this is manually 
 		var titlereg = doc.getElementsByClassName('regtitle-e')[0]||doc.getElementsByClassName('regtitle-f')[0];
 		titlereg = ZU.trimInternal(titlereg.textContent); 
-		Z.debug("titlereg: ("+titlereg+")");
+		//Z.debug("titlereg: ("+titlereg+")");
 		newItem.title=titlereg;
 	}
 	
 	var codeloi = doc.getElementsByClassName('chapter-e')[0]||doc.getElementsByClassName('chapter-f')[0]||doc.getElementsByClassName('regnumber-e')[0]||doc.getElementsByClassName('regnumber-f')[0];
 	codeloi = ZU.trimInternal(codeloi.textContent);
-	Z.debug("codeloi: ("+codeloi+")");
+	//Z.debug("codeloi: ("+codeloi+")");
 	//newItem.code=codeloi;
 	
 	if(frenchRegexp.test(url)){
@@ -102,7 +97,7 @@ function scrape(doc, url) {
 
 
 	var docurl = url.replace(/\/html\/statutes\/(?:english|french)/,"/Download").replace(/\.htm(?:[?#].*)?/, ".doc");
-	Z.debug("docurl: ("+docurl+")");
+	//Z.debug("docurl: ("+docurl+")");
 	
 	newItem.attachments.push({
 		url: docurl,
